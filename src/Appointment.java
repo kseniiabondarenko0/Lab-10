@@ -38,7 +38,6 @@ public class Appointment {
     @Override
     public String toString() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return "Appointment #"+ appointmentId + " - " + patient.getName() + " with Dr. " + doctor.getName() + " on " + dateTime.format(formatter) +
-                " (" + reason + ")";
+        return "Appointment #"+ appointmentId + " - " + patient.getName() + " with Dr. " + doctor.getName() + " on " + dateTime.format(formatter) + " (" + reason + ")";
     }
 }

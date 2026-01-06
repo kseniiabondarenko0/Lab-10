@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 
 public class ClinicTest {
     public static void main(String[] args) {
@@ -33,7 +34,6 @@ public class ClinicTest {
         patient2.setCondition("flu");
 
 
-
         System.out.println(" Introductions ");
         doc1.introduce();
         nurse1.introduce();
@@ -48,9 +48,7 @@ public class ClinicTest {
         receptionist1.performDuties();
 
 
-        System.out.println("\n Patient Treatment");
-        patient1.receiveTreatment();
-        patient2.receiveTreatment();
+
 
 
         System.out.println("\nUnique Subclass Methods");
@@ -58,5 +56,81 @@ public class ClinicTest {
         nurse1.checkVitals(patient1);
         nurse1.checkVitals(patient2);
         doc1.prescribeMedicine("Ibuprofen");
+
+
+        System.out.println("\n Create Appointments");
+        LocalDateTime date1 = LocalDateTime.of(2026, 1, 8, 10, 0);
+        LocalDateTime date2 = LocalDateTime.of(2026, 1, 8, 14, 0);
+        LocalDateTime date3 = LocalDateTime.of(2026, 1, 8, 10, 0);
+        LocalDateTime date4 = LocalDateTime.of(2026, 1, 8, 10, 30);
+
+        Appointment apt1 = receptionist1.createAppointment(patient1, doc1, date1, "check Up");
+        patient1.addAppointment(apt1);
+
+        Appointment apt2 = nurse1.createAppointment(patient2, doc1, date2, "Flu symptoms");
+        patient2.addAppointment(apt2);
+
+
+        System.out.println("\nAppointments for " + patient1.getName() + " ");
+        System.out.println(patient1.getAppointments());
+
+        System.out.println("\n Calendar for Dr. " + doc1.getName() + " ");
+        System.out.println(doc1.getAppointments());
+
+
+        System.out.println("Create Prescriptions");
+
+        Prescription prescription1 = doc1.createPrescription(patient1);
+        patient1.addPrescription(prescription1);
+        System.out.println("+" + prescription1);
+
+        Prescription prescription2 = doc1.createPrescription(patient2);
+        prescription2.addTreatment(new Treatment("Ibuprom", "Pain relief") {
+        });
+        prescription2.addTreatment(new Treatment("Azithromycin", "Antibiotics") {
+        });
+        patient2.addPrescription(prescription2);
+        System.out.println("+" + prescription2);
+
+        System.out.println("\n Prescriptions for " + patient1.getName() + " ");
+        displayPrescriptions(patient1.getPrescriptions());
+
+        System.out.println("\n Patient Treatment");
+        patient1.receiveTreatment();
+        patient2.receiveTreatment();
+
+
+    }
+
+    private static void addAppointment(Appointment appointment) {
+        try {
+            appointment.getDoctor().addAppointment(appointment);
+            appointment.getPatient().addAppointment(appointment);
+            System.out.println("✓ Appointment added: " + appointment);
+        } catch (Exception e) {
+            System.out.println("✗ Error: " + e.getMessage());
         }
     }
+
+    private static void displayAppointments(java.util.List<Appointment> appointments) {
+        if (appointments.isEmpty()) {
+            System.out.println("No appointments scheduled.");
+        } else {
+            appointments.forEach(System.out::println);
+        }
+    }
+
+    private static void displayPrescriptions(java.util.List<Prescription> prescriptions) {
+        if (prescriptions.isEmpty()) {
+            System.out.println("No prescriptions.");
+        } else {
+            for (Prescription p : prescriptions) {
+                System.out.println(p);
+                for (Treatment t : p.getTreatments()) {
+                    System.out.println("  - Treatment: " + t.getName() + " - " + t.getDescription());
+                }
+            }
+        }
+
+    }
+}
