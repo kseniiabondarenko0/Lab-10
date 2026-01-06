@@ -106,9 +106,9 @@ public class ClinicTest {
         try {
             appointment.getDoctor().addAppointment(appointment);
             appointment.getPatient().addAppointment(appointment);
-            System.out.println("✓ Appointment added: " + appointment);
+            System.out.println("+ Appointment added: " + appointment);
         } catch (Exception e) {
-            System.out.println("✗ Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
