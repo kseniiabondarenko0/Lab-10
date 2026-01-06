@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Appointment {
     private static int appointmentCounter = 5000;
@@ -28,7 +29,16 @@ public class Appointment {
         return dateTime;
     }
 
-    public boolean overlaps(Appointment appointment) {
-        return false;
+    public boolean overlaps(Appointment other) {
+        LocalDateTime thisEnd = this.dateTime.plusHours(1);
+        LocalDateTime otherEnd = other.dateTime.plusHours(1);
+        return !this.dateTime.isAfter(otherEnd) && !thisEnd.isBefore(other.dateTime);
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return "Appointment #"+ appointmentId + " - " + patient.getName() + " with Dr. " + doctor.getName() + " on " + dateTime.format(formatter) +
+                " (" + reason + ")";
     }
 }
